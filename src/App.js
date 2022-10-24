@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 
+import './categories.styles.scss'
+
 const App = () => {
   const categories = [
     {
@@ -27,15 +29,17 @@ const App = () => {
   return (
     <div>
       <div className='categories-container'>
-        <div className='background-image' />
-        <div className='category-body-container'>
-          {categories.map(({ title, id }) => (
-            <div id={id} key={id}>
-              <h2>{title}</h2>
-              <p>Shop Now</p>
+        {categories.map(({ title, id }) => (
+          <div className='category-container'>
+            <div className='background-image' />
+            <div className='category-body-container'>
+              <div id={id} key={id}>
+                <h2>{title}</h2>
+                <p>Shop Now</p>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )

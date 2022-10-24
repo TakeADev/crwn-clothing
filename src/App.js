@@ -36,8 +36,8 @@ const App = () => {
   return (
     <div>
       <div className='categories-container'>
-        {categories.map(({ title, id, imageUrl }) => (
-          <CategoryItem title={title} id={id} imageUrl={imageUrl} key={id} />
+        {categories.map((category) => (
+          <CategoryItem category={category} key={category.id} />
         ))}
       </div>
     </div>

@@ -5,7 +5,7 @@ import CategoryItem from '../category-item/category-item.component'
 const Directory = ({ categories }) => {
   return (
     <div>
-      <div className='categories-container'>
+      <div className='directory-container'>
         {categories.map((category) => (
           <CategoryItem category={category} key={category.id} />
         ))}

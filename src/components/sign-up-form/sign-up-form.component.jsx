@@ -1,6 +1,7 @@
 import React from 'react'
-import Navigation from '../../routes/navigation/navigation.component'
 import { useState } from 'react'
+
+import { createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
 
 const defaultFormFields = {
   displayName: '',
@@ -19,10 +20,20 @@ const SignUpForm = () => {
     setformFields({ ...formFields, [name]: value })
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (password !== confirmPassword) {
+      return alert('Passwords do not match')
+    }
+    console.log(formFields)
+    createAuthUserWithEmailAndPassword(email, password)
+    setformFields(defaultFormFields)
+  }
+
   return (
     <div>
       <h1>Sign up with your email and password</h1>
-      <form onSubmit={() => {}}>
+      <form onSubmit={handleSubmit}>
         <label>Display Name: </label>
         <input
           required
@@ -59,7 +70,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <button type='submit'>Submit</button>
+        <button>Submit</button>
       </form>
     </div>
   )

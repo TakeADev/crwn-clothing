@@ -15,6 +15,7 @@ function SignInForm() {
   const logGooglePopupUser = async () => {
     const { user } = await signInWithGooglePopup()
     const userDocRef = await createUserDocumentFromAuth(user)
+    alert('Welcome ' + user.displayName)
   }
 
   const defaultFormFields = {

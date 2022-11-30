@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import {
   getAuth,
-  signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -27,17 +26,6 @@ googleProvider.setCustomParameters({
 })
 
 export const auth = getAuth()
-export const signUserInWithEmailAndPassword = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user
-    })
-    .catch((err) => console.log(err))
-}
-
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
-export const signInWithGoogleRedirect = () =>
-  signInWithRedirect(auth, googleProvider)
 
 export const db = getFirestore()
 
@@ -77,3 +65,13 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 
   return await createUserWithEmailAndPassword(auth, email, password)
 }
+
+export const signInAuthUserInWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) {
+    return
+  }
+
+  return await signInWithEmailAndPassword(auth, email, password)
+}
+
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)

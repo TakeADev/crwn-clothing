@@ -3,18 +3,13 @@ import '../sign-in-form/sign-in-form.styles.scss'
 import Button from '../button/button.component'
 import FormInput from '../form-input/form-input.component'
 import { useState } from 'react'
-import { signUserInWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
+import { signInAuthUserInWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
 
-import {
-  signInWithGooglePopup,
-  createUserDocumentFromAuth,
-  auth,
-} from '../../utils/firebase/firebase.utils'
+import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils'
 
 function SignInForm() {
-  const logGooglePopupUser = async () => {
+  const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup()
-    const userDocRef = await createUserDocumentFromAuth(user)
     alert('Welcome ' + user.displayName)
   }
 
@@ -23,10 +18,10 @@ function SignInForm() {
     password: '',
   }
 
+  const resetFormFields = () => setformFields(defaultFormFields)
+
   const [formFields, setformFields] = useState(defaultFormFields)
   const { email, password } = formFields
-
-  const resetFormFields = () => setformFields(defaultFormFields)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -36,11 +31,18 @@ function SignInForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     try {
-      await signUserInWithEmailAndPassword(email, password)
+      const res = await signInAuthUserInWithEmailAndPassword(email, password)
+      console.log(res.user)
       resetFormFields()
     } catch (err) {
-      alert(err)
+      console.log(err)
+      if (err.code === 'auth/wrong-password') {
+        alert('Invalid password associated with email')
+      } else if (err.code === 'auth/user-not-found') {
+        alert('No account found associated with this email')
+      }
     }
   }
 
@@ -69,12 +71,14 @@ function SignInForm() {
             value: password,
           }}
         />
-        <Button type='submit' onClick={handleSubmit}>
-          Sign In
-        </Button>
-        <Button onClick={logGooglePopupUser} buttonType='google'>
-          Sign In with Google Popup
-        </Button>
+        <div className='buttons-container'>
+          <Button type='submit' onClick={handleSubmit}>
+            Sign In
+          </Button>
+          <Button onClick={signInWithGoogle} buttonType='google'>
+            Google Sign In
+          </Button>
+        </div>
       </form>
     </div>
   )

@@ -34,14 +34,15 @@ function SignInForm() {
 
     try {
       const res = await signInAuthUserInWithEmailAndPassword(email, password)
-      console.log(res.user)
       resetFormFields()
     } catch (err) {
-      console.log(err)
-      if (err.code === 'auth/wrong-password') {
-        alert('Invalid password associated with email')
-      } else if (err.code === 'auth/user-not-found') {
-        alert('No account found associated with this email')
+      switch (err.code) {
+        case 'auth/wrong-password':
+          alert('Incorrect password for email')
+          break
+        case 'auth/user-not-found':
+          alert('No account found associated with this email')
+          break
       }
     }
   }
@@ -72,10 +73,8 @@ function SignInForm() {
           }}
         />
         <div className='buttons-container'>
-          <Button type='submit' onClick={handleSubmit}>
-            Sign In
-          </Button>
-          <Button onClick={signInWithGoogle} buttonType='google'>
+          <Button type='submit'>Sign In</Button>
+          <Button type='button' onClick={signInWithGoogle} buttonType='google'>
             Google Sign In
           </Button>
         </div>

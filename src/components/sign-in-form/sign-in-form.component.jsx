@@ -21,6 +21,7 @@ function SignInForm() {
     password: '',
   }
 
+  //Resets form fields to default values. Empty strings
   const resetFormFields = () => setformFields(defaultFormFields)
 
   const [formFields, setformFields] = useState(defaultFormFields)
@@ -28,20 +29,26 @@ function SignInForm() {
 
   const { setCurrentUser } = useContext(UserContext)
 
+  //When field changes, updates form field state with value
   const handleChange = (e) => {
     const { name, value } = e.target
 
     setformFields({ ...formFields, [name]: value })
   }
 
+  //Handles when form is submitted
   const handleSubmit = async (e) => {
+    //Prevents default action of form field
     e.preventDefault()
 
     try {
+      //Sets user object to variable after request to firebase
       const user = await signInAuthUserInWithEmailAndPassword(email, password)
 
+      //Sets user context
       setCurrentUser(user)
 
+      //Resets form field to default
       resetFormFields()
     } catch (err) {
       switch (err.code) {

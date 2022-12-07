@@ -22,10 +22,12 @@ const SignUpForm = () => {
   const [formFields, setformFields] = useState(defaultFormFields)
   const { displayName, email, password, confirmPassword } = formFields
 
+  //Resets form fields to default values. Empty strings
   const resetFormFields = () => {
     setformFields(defaultFormFields)
   }
 
+  //When field changes, updates form field state with value
   const handleChange = (e) => {
     const { name, value } = e.target
 
@@ -33,13 +35,19 @@ const SignUpForm = () => {
   }
 
   const handleSubmit = async (e) => {
+    //Prevents default form action on submit
     e.preventDefault()
+
+    //Sends alert if inputted pasword and confirm password do not match
     if (password !== confirmPassword) {
       alert('Passwords do not match')
       return
     }
     try {
+      //creates user object with email and password from form inputs
       const { user } = await createAuthUserWithEmailAndPassword(email, password)
+
+      //Creates a user document including user object and extends display name from form input
       await createUserDocumentFromAuth(user, { displayName })
       resetFormFields()
     } catch (err) {

@@ -16,6 +16,7 @@ const Navigation = () => {
   const signOutHandler = async () => {
     await signOutUser()
   }
+
   return (
     <Fragment>
       <div className='navigation'>

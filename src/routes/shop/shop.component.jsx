@@ -7,7 +7,7 @@ import { ProductsContext } from '../../context/products.context'
 
 import '../shop/shop-styles.scss'
 
-const Shop = () => {
+export const Shop = () => {
   const { products } = useContext(ProductsContext)
 
   return (
@@ -18,5 +18,3 @@ const Shop = () => {
     </div>
   )
 }
-
-export default Shop

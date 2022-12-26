@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../button/button.component'
+import { Button } from '../button/button.component'
 
 import '../product-card/product-card.styles.scss'
 

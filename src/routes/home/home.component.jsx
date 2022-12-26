@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import Directory from '../../components/directory/directory.component'
+import { Directory } from '../../components/directory/directory.component'
 
 const categories = [
   {
@@ -30,8 +30,6 @@ const categories = [
   },
 ]
 
-const Home = () => {
+export const Home = () => {
   return <Directory categories={categories} />
 }
-
-export default Home

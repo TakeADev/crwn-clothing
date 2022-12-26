@@ -10,7 +10,7 @@ import { UserContext } from '../../context/user.context'
 
 import { signOutUser } from '../../utils/firebase/firebase.utils'
 
-const Navigation = () => {
+export const Navigation = () => {
   const { currentUser } = useContext(UserContext)
 
   const signOutHandler = async () => {
@@ -42,5 +42,3 @@ const Navigation = () => {
     </Fragment>
   )
 }
-
-export default Navigation

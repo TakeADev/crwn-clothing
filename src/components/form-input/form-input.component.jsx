@@ -1,7 +1,7 @@
 import React from 'react'
 import '../form-input/form-input.styles.scss'
 
-function FormInput({ label, inputOptions }) {
+export const FormInput = ({ label, inputOptions }) => {
   return (
     <div className='group'>
       <input className='form-input' {...inputOptions} />
@@ -17,5 +17,3 @@ function FormInput({ label, inputOptions }) {
     </div>
   )
 }
-
-export default FormInput

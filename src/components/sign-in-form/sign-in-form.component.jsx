@@ -3,12 +3,12 @@ import '../sign-in-form/sign-in-form.styles.scss'
 import { useState } from 'react'
 import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
 
-import Button from '../button/button.component'
-import FormInput from '../form-input/form-input.component'
+import { Button } from '../button/button.component'
+import { FormInput } from '../form-input/form-input.component'
 
 import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils'
 
-function SignInForm() {
+export const SignInForm = () => {
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup()
     alert('Welcome ' + user.displayName)
@@ -90,5 +90,3 @@ function SignInForm() {
     </div>
   )
 }
-
-export default SignInForm

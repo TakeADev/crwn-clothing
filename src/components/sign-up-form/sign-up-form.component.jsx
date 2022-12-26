@@ -6,8 +6,8 @@ import {
   createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils'
 
-import FormInput from '../form-input/form-input.component'
-import Button from '../button/button.component'
+import { FormInput } from '../form-input/form-input.component'
+import { Button } from '../button/button.component'
 
 import '../sign-up-form/sign-up-form.styles.scss'
 
@@ -18,7 +18,7 @@ const defaultFormFields = {
   confirmPassword: '',
 }
 
-const SignUpForm = () => {
+export const SignUpForm = () => {
   const [formFields, setformFields] = useState(defaultFormFields)
   const { displayName, email, password, confirmPassword } = formFields
 
@@ -109,5 +109,3 @@ const SignUpForm = () => {
     </div>
   )
 }
-
-export default SignUpForm

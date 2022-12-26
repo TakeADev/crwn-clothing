@@ -10,7 +10,6 @@ import FormInput from '../form-input/form-input.component'
 import Button from '../button/button.component'
 
 import '../sign-up-form/sign-up-form.styles.scss'
-import { UserContext } from '../../context/user.context'
 
 const defaultFormFields = {
   displayName: '',
@@ -22,8 +21,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setformFields] = useState(defaultFormFields)
   const { displayName, email, password, confirmPassword } = formFields
-
-  const { setCurrentUser } = useContext(UserContext)
 
   //Resets form fields to default values. Empty strings
   const resetFormFields = () => {
@@ -49,8 +46,6 @@ const SignUpForm = () => {
     try {
       //creates user object with email and password from form inputs
       const { user } = await createAuthUserWithEmailAndPassword(email, password)
-
-      setCurrentUser(user)
 
       //Creates a user document including user object and extends display name from form input
       await createUserDocumentFromAuth(user, { displayName })

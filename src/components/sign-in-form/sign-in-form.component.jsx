@@ -1,6 +1,6 @@
 import React from 'react'
 import '../sign-in-form/sign-in-form.styles.scss'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { signInAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
 
 import Button from '../button/button.component'

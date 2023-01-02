@@ -21,11 +21,6 @@ export const Navigation = () => {
     await signOutUser()
   }
 
-  const cartClickHandler = (e) => {
-    e.preventDefault()
-    cartIsOpen ? setCartIsOpen(false) : setCartIsOpen(true)
-  }
-
   return (
     <Fragment>
       <div className='navigation'>
@@ -45,7 +40,7 @@ export const Navigation = () => {
               SIGN IN
             </Link>
           )}
-          <CartIcon onClick={cartClickHandler} />
+          <CartIcon />
         </div>
         {cartIsOpen && <CartDropdown />}
       </div>

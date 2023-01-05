@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 
 const addCartItem = (cartItems, productToAdd) => {
   //Finds if cart items array already has a specific product (productToAdd)
@@ -24,17 +24,34 @@ export const CartContext = createContext({
   setIsCartOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
+  cartCount: 0,
+  setCartCount: () => {},
 })
 
 export const CartProvider = ({ children }) => {
   const [cartIsOpen, setCartIsOpen] = useState(false)
   const [cartItems, setCartItems] = useState([])
+  const [cartCount, setCartCount] = useState(0)
+
+  useEffect(() => {
+    const newCartCount = cartItems.reduce(
+      (total, cartItem) => total + cartItem.quantity,
+      0
+    )
+    setCartCount(newCartCount)
+  }, [cartItems])
 
   const addItemToCart = (productToAdd) => {
     setCartItems(addCartItem(cartItems, productToAdd))
   }
 
-  const value = { cartIsOpen, setCartIsOpen, addItemToCart, cartItems }
+  const value = {
+    cartIsOpen,
+    setCartIsOpen,
+    addItemToCart,
+    cartItems,
+    cartCount,
+  }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

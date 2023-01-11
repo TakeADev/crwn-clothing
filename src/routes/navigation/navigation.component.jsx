@@ -1,5 +1,5 @@
 import React from 'react'
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
@@ -15,7 +15,7 @@ import { CartContext } from '../../context/cart.context'
 
 export const Navigation = () => {
   const { currentUser } = useContext(UserContext)
-  const { cartIsOpen, setCartIsOpen } = useContext(CartContext)
+  const { cartIsOpen } = useContext(CartContext)
 
   const signOutHandler = async () => {
     await signOutUser()

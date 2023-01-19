@@ -17,6 +17,7 @@ export const ProductsProvider = ({ children }) => {
       const categoryMap = await getCategoriesAndDocuments()
     }
     getCategoriesMap()
+    console.log('test')
   })
 
   return (

@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Directory } from '../../components/directory/directory.component'
@@ -31,5 +32,10 @@ const categories = [
 ]
 
 export const Home = () => {
-  return <Directory categories={categories} />
+  return (
+    <div>
+      <Directory categories={categories} />
+      <Outlet />
+    </div>
+  )
 }

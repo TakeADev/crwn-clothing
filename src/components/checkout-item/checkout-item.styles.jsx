@@ -23,7 +23,7 @@ export const Price = styled.span`
   width: 23%;
 `
 
-export const Quanitiy = styled.div`
+export const Quantity = styled.div`
   display: flex;
 `
 

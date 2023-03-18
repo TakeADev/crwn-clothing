@@ -6,7 +6,7 @@ import {
   CheckoutItemContainer,
   CheckoutItemImageContainer,
   Price,
-  Quanitiy,
+  Quantity,
   Arrow,
   Value,
   RemoveButton,
@@ -28,11 +28,11 @@ const CheckoutItem = ({ checkoutItem }) => {
         <img src={imageUrl} alt={name} />
       </CheckoutItemImageContainer>
       <span>{name}</span>
-      <Quanitiy>
+      <Quantity>
         <Arrow onClick={removeCartItem}>&#10094;</Arrow>
         <Value>{quantity}</Value>
         <Arrow onClick={increaseQuantity}>&#10095;</Arrow>
-      </Quanitiy>
+      </Quantity>
       <Price>${price}</Price>
       <RemoveButton onClick={clearCartItem}>&#10005;</RemoveButton>
     </CheckoutItemContainer>

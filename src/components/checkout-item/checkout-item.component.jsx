@@ -10,6 +10,7 @@ import {
   Arrow,
   Value,
   RemoveButton,
+  Name,
 } from './checkout-item.styles.jsx'
 
 const CheckoutItem = ({ checkoutItem }) => {
@@ -27,7 +28,7 @@ const CheckoutItem = ({ checkoutItem }) => {
       <CheckoutItemImageContainer alt={name}>
         <img src={imageUrl} alt={name} />
       </CheckoutItemImageContainer>
-      <span>{name}</span>
+      <Name>{name}</Name>
       <Quantity>
         <Arrow onClick={removeCartItem}>&#10094;</Arrow>
         <Value>{quantity}</Value>

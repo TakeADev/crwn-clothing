@@ -8,6 +8,7 @@ export const CheckoutItemContainer = styled.div`
   padding: 15px 0;
   font-size: 20px;
   align-items: center;
+  justify-content: space-between;
 `
 
 export const CheckoutItemImageContainer = styled.div`
@@ -19,6 +20,8 @@ export const CheckoutItemImageContainer = styled.div`
     height: 100%;
   }
 `
+export const Name = styled.span``
+
 export const Price = styled.span`
   width: 23%;
 `

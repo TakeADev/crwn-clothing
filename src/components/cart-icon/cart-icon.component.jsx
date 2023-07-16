@@ -6,13 +6,10 @@ import { CartContext } from '../../context/cart.context'
 import { CartIconContainer, ShoppingIcon, ItemCount } from './cart-icon.styles'
 
 export const CartIcon = () => {
-  const { cartIsOpen, setCartIsOpen, cartCount } = useContext(CartContext)
-  const toggleCartIsOpen = () => {
-    setCartIsOpen(!cartIsOpen)
-  }
+  const { setCartIsOpen, cartCount } = useContext(CartContext)
 
   return (
-    <CartIconContainer onClick={toggleCartIsOpen}>
+    <CartIconContainer onClick={setCartIsOpen}>
       <ShoppingIcon />
       <ItemCount>{cartCount}</ItemCount>
     </CartIconContainer>

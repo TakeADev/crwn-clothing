@@ -91,6 +91,21 @@ export const CartProvider = ({ children }) => {
   const [{ cartIsOpen, cartItems, cartCount, cartTotal }, dispatch] =
     useReducer(cartReducer, INITIAL_STATE)
 
+  const addItemToCart = (productToAdd) => {
+    const newCartItems = addCartItem(cartItems, productToAdd)
+    updateCartItemsReducer(newCartItems)
+  }
+
+  const removeItemFromCart = (cartItemToRemove) => {
+    const newCartItems = removeCartItem(cartItems, cartItemToRemove)
+    updateCartItemsReducer(newCartItems)
+  }
+
+  const clearItemFromCart = (cartItemToClear) => {
+    const newCartItems = clearCartItem(cartItems, cartItemToClear)
+    updateCartItemsReducer(newCartItems)
+  }
+
   const setCartIsOpen = (bool) => {
     dispatch(createAction(CART_ACTION_TYPES.TOGGLE_CART_OPEN, bool))
   }
@@ -114,21 +129,6 @@ export const CartProvider = ({ children }) => {
         cartItems: newCartItems,
       },
     })
-  }
-
-  const addItemToCart = (productToAdd) => {
-    const newCartItems = addCartItem(cartItems, productToAdd)
-    updateCartItemsReducer(newCartItems)
-  }
-
-  const removeItemFromCart = (cartItemToRemove) => {
-    const newCartItems = removeCartItem(cartItems, cartItemToRemove)
-    updateCartItemsReducer(newCartItems)
-  }
-
-  const clearItemFromCart = (cartItemToClear) => {
-    const newCartItems = clearCartItem(cartItems, cartItemToClear)
-    updateCartItemsReducer(newCartItems)
   }
 
   const value = {

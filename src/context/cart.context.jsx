@@ -33,23 +33,13 @@ export const cartReducer = (state, action) => {
     case 'TOGGLE_CART_OPEN': {
       return {
         ...state,
-        ...payload,
+        cartIsOpen: payload,
       }
     }
     default: {
       throw new Error(`Unhandled type ${type} in cartReducer`)
     }
   }
-}
-const getCartCount = (items) => {
-  return items.reduce((total, cartItem) => total + cartItem.quantity, 0)
-}
-
-const getCartTotal = (items) => {
-  return items.reduce(
-    (total, cartItem) => total + cartItem.price * cartItem.quantity,
-    0
-  )
 }
 
 const addCartItem = (cartItems, productToAdd) => {
@@ -95,43 +85,47 @@ export const CartProvider = ({ children }) => {
   const [{ cartIsOpen, cartItems, cartCount, cartTotal }, dispatch] =
     useReducer(cartReducer, INITIAL_STATE)
 
-  const updateCartItemsReducer = (newCartItems) => {
-    const updateCartItems = () => {
-      return {
-        ...{ cartItems: newCartItems },
-        ...{ cartCount: getCartCount(newCartItems) },
-        ...{ cartTotal: getCartTotal(newCartItems) },
-      }
-    }
-    dispatch({ type: 'SET_CART_ITEMS', payload: updateCartItems() })
+  const setCartIsOpen = (bool) => {
+    dispatch({
+      type: 'TOGGLE_CART_OPEN',
+      payload: bool,
+    })
   }
 
-  const setCartIsOpen = () => {
-    const newCartIsOpen = (open) => {
-      return { ...cartItems, cartIsOpen: (open = !open) }
-    }
-    dispatch({ type: 'TOGGLE_CART_OPEN', payload: newCartIsOpen(cartIsOpen) })
+  const updateCartItemsReducer = (newCartItems) => {
+    const newCartCount = newCartItems.reduce(
+      (total, cartItem) => total + cartItem.quantity,
+      0
+    )
+
+    const newCartTotal = newCartItems.reduce(
+      (total, cartItem) => total + cartItem.price * cartItem.quantity,
+      0
+    )
+
+    dispatch({
+      type: 'SET_CART_ITEMS',
+      payload: {
+        cartCount: newCartCount,
+        cartTotal: newCartTotal,
+        cartItems: newCartItems,
+      },
+    })
   }
 
   const addItemToCart = (productToAdd) => {
-    const newCartItems = () => {
-      return addCartItem(cartItems, productToAdd)
-    }
-    return updateCartItemsReducer(newCartItems())
+    const newCartItems = addCartItem(cartItems, productToAdd)
+    updateCartItemsReducer(newCartItems)
   }
 
   const removeItemFromCart = (cartItemToRemove) => {
-    const newCartItems = () => {
-      return removeCartItem(cartItems, cartItemToRemove)
-    }
-    return updateCartItemsReducer(newCartItems())
+    const newCartItems = removeCartItem(cartItems, cartItemToRemove)
+    updateCartItemsReducer(newCartItems)
   }
 
   const clearItemFromCart = (cartItemToClear) => {
-    const newCartItems = () => {
-      return clearCartItem(cartItems, cartItemToClear)
-    }
-    return updateCartItemsReducer(newCartItems())
+    const newCartItems = clearCartItem(cartItems, cartItemToClear)
+    updateCartItemsReducer(newCartItems)
   }
 
   const value = {

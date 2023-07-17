@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect, useReducer } from 'react'
+import { createContext, useReducer } from 'react'
+import { createAction } from '../utils/reducer/reducer.utils'
 
 export const CartContext = createContext({
-  isCartOpen: false,
+  cartIsOpen: false,
   setIsCartOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
@@ -13,41 +14,57 @@ export const CartContext = createContext({
   setCartTotal: () => {},
 })
 
-export const CART_ACTION_TYPES = {
-  ADD_CART_ITEM: 'ADD_CART_ITEM',
-}
-
 const INITIAL_STATE = {
+  cartIsOpen: false,
   cartItems: [],
+  cartCount: 0,
+  cartTotal: 0,
 }
 
-const cartReducer = (state, action) => {
+const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: 'SET_CART_ITEMS',
+  TOGGLE_CART_OPEN: 'TOGGLE_CART_OPEN',
+}
+
+export const cartReducer = (state, action) => {
   const { type, payload } = action
-  const { cartItems } = state
 
   switch (type) {
-    case CART_ACTION_TYPES.ADD_CART_ITEM: {
-      console.log('hit')
-      //Finds if cart items array already has a specific product (productToAdd)
-      const existingCartItem = cartItems.find(
-        (cartItem) => cartItem.id === payload.id
-      )
-      console.log(existingCartItem)
-      //If theres an existing cart item in the array, return the array and add one to quantity of item, else return the original item
-      if (existingCartItem) {
-        return cartItems.map((cartItem) =>
-          cartItem.id === payload.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
+    case CART_ACTION_TYPES.SET_CART_ITEMS: {
+      return {
+        ...state,
+        ...payload,
       }
-
-      //Returns array of cart items and adds quantity field to object if product to add is not already in the array
-      return [...cartItems, { ...payload, quantity: 1 }]
     }
-    default:
+    case CART_ACTION_TYPES.TOGGLE_CART_OPEN: {
+      return {
+        ...state,
+        cartIsOpen: payload,
+      }
+    }
+    default: {
       throw new Error(`Unhandled type ${type} in cartReducer`)
+    }
   }
+}
+
+const addCartItem = (cartItems, productToAdd) => {
+  //Finds if cart items array already has a specific product (productToAdd)
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem.id === productToAdd.id
+  )
+
+  //If theres an existing cart item in the array, return the array and add one to quantity of item, else return the original item
+  if (existingCartItem) {
+    return cartItems.map((cartItem) =>
+      cartItem.id === productToAdd.id
+        ? { ...cartItem, quantity: cartItem.quantity + 1 }
+        : cartItem
+    )
+  }
+
+  //Returns array of cart items and adds quantity field to object if product to add is not already in the array
+  return [...cartItems, { ...productToAdd, quantity: 1 }]
 }
 
 const removeCartItem = (cartItems, cartItemToRemove) => {
@@ -66,43 +83,52 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
   )
 }
 
-const clearCartItem = (cartItems, cartItemToClear) =>
-  cartItems.filter((item) => item.id !== cartItemToClear.id)
+const clearCartItem = (cartItems, cartItemToClear) => {
+  return cartItems.filter((item) => item.id !== cartItemToClear.id)
+}
 
 export const CartProvider = ({ children }) => {
-  const [cartIsOpen, setCartIsOpen] = useState(false)
-  const [cartItemss, setCartItems] = useState([])
-  const [cartCount, setCartCount] = useState(0)
-  const [cartTotal, setCartTotal] = useState(0)
+  const [{ cartIsOpen, cartItems, cartCount, cartTotal }, dispatch] =
+    useReducer(cartReducer, INITIAL_STATE)
 
-  const [{ cartItems }, dispatch] = useReducer(cartReducer, INITIAL_STATE)
+  const setCartIsOpen = (bool) => {
+    dispatch(createAction(CART_ACTION_TYPES.TOGGLE_CART_OPEN, bool))
+  }
 
-  useEffect(() => {
-    const newCartCount = cartItems.reduce(
+  const updateCartItemsReducer = (newCartItems) => {
+    const newCartCount = newCartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     )
-    setCartCount(newCartCount)
-  }, [cartItems])
 
-  useEffect(() => {
-    const newCartTotal = cartItems.reduce(
+    const newCartTotal = newCartItems.reduce(
       (total, cartItem) => total + cartItem.price * cartItem.quantity,
       0
     )
-    setCartTotal(newCartTotal)
-  }, [cartItems])
+
+    dispatch({
+      type: 'SET_CART_ITEMS',
+      payload: {
+        cartCount: newCartCount,
+        cartTotal: newCartTotal,
+        cartItems: newCartItems,
+      },
+    })
+  }
 
   const addItemToCart = (productToAdd) => {
-    dispatch({ type: CART_ACTION_TYPES.ADD_CART_ITEM, payload: productToAdd })
+    const newCartItems = addCartItem(cartItems, productToAdd)
+    updateCartItemsReducer(newCartItems)
   }
 
   const removeItemFromCart = (cartItemToRemove) => {
-    setCartItems(removeCartItem(cartItems, cartItemToRemove))
+    const newCartItems = removeCartItem(cartItems, cartItemToRemove)
+    updateCartItemsReducer(newCartItems)
   }
 
   const clearItemFromCart = (cartItemToClear) => {
-    setCartItems(clearCartItem(cartItems, cartItemToClear))
+    const newCartItems = clearCartItem(cartItems, cartItemToClear)
+    updateCartItemsReducer(newCartItems)
   }
 
   const value = {

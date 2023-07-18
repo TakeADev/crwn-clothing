@@ -35,7 +35,7 @@ export const App = () => {
       const categoryMap = await getCategoriesAndDocuments()
       return categoryMap
     }
-    setCategories(getCategoriesMap)
+    getCategoriesMap().then((value) => dispatch(setCategories(value)))
   })
 
   return (

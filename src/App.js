@@ -7,8 +7,6 @@ import {
   onAuthStateChangedListener,
 } from './utils/firebase/firebase.utils'
 import { setCurrentUser } from './store/user/user.action'
-import { setCategories } from './store/categories/category.action'
-import { getCategoriesAndDocuments } from './utils/firebase/firebase.utils'
 
 import { Home } from './routes/home/home.component'
 import { Navigation } from './routes/navigation/navigation.component'
@@ -28,14 +26,6 @@ export const App = () => {
     })
 
     return unsubscribe
-  })
-
-  useEffect(() => {
-    const getCategoriesMap = async () => {
-      const categoryMap = await getCategoriesAndDocuments()
-      return categoryMap
-    }
-    getCategoriesMap().then((value) => dispatch(setCategories(value)))
   })
 
   return (
